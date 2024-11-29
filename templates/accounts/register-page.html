@@ -1,0 +1,21 @@
+{% extends 'common/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <!-- Start Login Section-->
+    <div class="login-register-div justify">
+        <div class="login-register-box align-center">
+            <h1>Stick Fit</h1>
+
+            <!-- Start Login Form-->
+            <form class="login" method="post">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <!-- Login Button-->
+                <button type="submit" class="btn btn-primary">Log in</button>
+            </form>
+            <!-- End Login Form -->
+
+        </div>
+    </div>
+    <!-- End Login Section-->
+{% endblock %}

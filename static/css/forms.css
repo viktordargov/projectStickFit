@@ -1,0 +1,10 @@
+.form-class {
+    display: block;
+    border: 2px dotted black;
+    max-width: 550px;
+    background-color: rgb(173, 235, 235);
+    padding: 50px 25px;
+    margin-bottom: 5px;
+    border-radius: 1rem;
+    box-shadow: 5px 5px 5px #888888;
+}

@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Quicksand&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Doto:wght@100..900&display=swap');
+
+
+* {
+    font-family: "Doto", sans-serif;
+    font-optical-sizing: none;
+    font-weight: 750;
+    font-style: normal;
+    font-variation-settings: "ROND" 100;
+
+}
+
+
+.gif-container {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Align the GIF to the bottom */
+    width: 100%; /* Stretch the container to full width */
+    height: 95vh;
+}
+
+
+/* Style for the gif itself */
+.gif-container img {
+    max-width: 80%; /* Adjust size */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/*.navbar {*/
+/*    background-color: #f0f8ff; !* Light blue background *!*/
+/*}*/
+
+/*.navbar-nav .nav-link {*/
+/*    color: #333;*/
+/*    font-weight: bold;*/
+/*}*/
+
+.navbar-nav .nav-link:hover {
+    background-color: #b2ebf2; /* Light blue hover effect */
+    border-radius: 4px;
+    color: #333;
+}
+
+.navbar-brand img {
+    width: 50px; /* Adjust logo size */
+    height: auto;
+}

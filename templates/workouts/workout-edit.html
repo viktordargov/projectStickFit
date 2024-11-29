@@ -1,0 +1,89 @@
+{% extends 'common/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <script>
+        function toggleFields() {
+            const repetitionField = document.getElementById('repetition_id');
+            const durationField = document.getElementById('duration_id');
+            const option1Radio = document.getElementById('option1-radio');
+
+            if (option1Radio.checked) {
+                repetitionField.classList.remove('hidden');
+                durationField.classList.add('hidden');
+            } else {
+                durationField.classList.remove('hidden');
+                repetitionField.classList.add('hidden');
+            }
+        }
+
+        window.onload = function () {
+            toggleFields(); // Set initial state based on default selection
+        };
+    </script>
+    <div class="add-course-exercise-div">
+        <div class="form-class">
+            <h2>Add exercise to {{ workout.workout_name }} </h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.exercise|as_crispy_field }}
+                {{ form.order|as_crispy_field }}
+                <p>
+                    <label>
+                        <input type="radio" name="toggle" id="option1-radio" value="option1" onclick="toggleFields()"
+                               checked>
+                        Repetitions
+                    </label>
+                    <label>
+                        <input type="radio" name="toggle" id="option2-radio" value="option2" onclick="toggleFields()">
+                        Duration
+                    </label>
+                </p>
+                <div id="repetition_id">
+                    {{ form.repetitions|as_crispy_field }}
+                </div>
+                <div id="duration_id" class="hidden">
+                    {{ form.duration|as_crispy_field }}
+                </div>
+                {% if form.order.errors %}
+                    <div class="error">{{ form.order.errors }}</div>
+                {% endif %}
+                <button class="btn btn-primary btn-pill ms-auto" type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Exercise List Table -->
+    <div class="exercise-table-center">
+        <div id="exercise-table">
+            <h3>Exercise List</h3>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>Order</th>
+                    <th>Exercise</th>
+                    <th>Set</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for e in workout_exercises %}
+                    <tr id="exercise-{{ forloop.counter }}">
+                    <td>{{ e.order }}</td>
+                        <td>{{ e.exercise.exercise_name }}</td>
+                        <td>
+                            {% if e.duration %}
+                                {{ e.duration }} sec
+                            {% else %}
+                                {{ e.repetitions }} reps
+                            {% endif %}
+                        </td>
+                        <td><a class="btn btn-outline-alert" href="{% url 'workout_exercise_delete' pk=e.pk %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+{% endblock %}

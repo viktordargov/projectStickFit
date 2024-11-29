@@ -1,0 +1,70 @@
+.add-course-exercise-div {
+    margin-top: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-course-exercise-form {
+    display: block;
+    width: 550px;
+    background-color: rgb(173, 216, 230);
+    border: 1px solid rgb(156, 152, 152);
+    padding: 50px 25px;
+    margin-bottom: 5px;
+    border-radius: 50px;
+    border: 0.5px solid;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+.exercise-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.timer {
+    font-size: 3em;
+    margin-top: 10px;
+}
+
+#exercise-table {
+    width: 40%;
+}
+
+#exercise-table th, #exercise-table td {
+    text-align: center;
+}
+
+.current-exercise {
+    --bs-table-bg: #96F2E5;
+}
+
+.exercise-timer {
+    margin-top: 4rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.exercise-table-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.spotify-div {
+    display: flex;
+    flex-direction: column;
+}
+
+.spotify-player {
+    width: 100%;  /* Ensure it takes up the full width of its parent container */
+    max-width: 999px;  /* Set a maximum width */
+    margin: 5rem auto;  /* Center the div horizontally */
+    padding: 20px;  /* Optional padding */
+    text-align: center;
+}

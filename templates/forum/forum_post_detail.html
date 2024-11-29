@@ -1,0 +1,75 @@
+{% extends 'common/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Post Details -->
+                <div class="card shadow-sm">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text">{{ post.content }}</p>
+                        <p class="card-text"><small class="text-muted">Posted
+                            by {{ post.author.appprofile.get_display_name }}
+                            on {{ post.created_at|date:"F j, Y" }}</small></p>
+
+                        <p class="card-text">
+                            <strong>Likes:</strong> {{ post.likes.count }}
+                        </p>
+
+                        <!-- Like/Unlike Button -->
+                        <div class="d-flex justify-content-between">
+                            <form action="{% url 'like_post' pk=post.pk %}" method="POST" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="source" value="post-detail">
+                                <button type="submit" class="btn btn-outline-primary btn-sm">
+                                    {% if liked %}
+                                        Unlike
+                                    {% else %}
+                                        Like
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comments Section (if any) -->
+                <div class="mt-4">
+                    <h3>Comments</h3>
+                    {% for comment in post.comments.all %}
+                        <div class="media mb-3">
+                            <div class="media-body">
+                                <h5 class="mt-0">{{ comment.author.appprofile.get_display_name }}</h5>
+                                <p>{{ comment.content }}</p>
+                                <p><small class="text-muted">Commented
+                                    on {{ comment.created_at|date:"F j, Y" }}</small></p>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p>No comments yet. Be the first to comment!</p>
+                    {% endfor %}
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <strong>Add a Comment:</strong>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <textarea name="content" class="form-control"
+                                              placeholder="Write your comment here..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

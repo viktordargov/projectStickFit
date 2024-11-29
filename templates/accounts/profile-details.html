@@ -1,0 +1,43 @@
+{% extends 'common/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+    <div class="container profile-container">
+        <div class="row align-items-center">
+            <!-- Left Section: Profile Picture and Names -->
+            <div class="col-md-4 text-center">
+                <img
+                        src="{{ profile.profile_picture.url }}"
+                        alt="Profile Picture"
+                        class="profile-picture mb-3"
+                >
+                <h2>{{ profile.display_name }}</h2>
+                <p>{{ profile.first_name }} {{ profile.last_name }}</p>
+            </div>
+
+            <!-- Right Section: Profile Details -->
+            <div class="col-md-8">
+                <h3>Profile Details</h3>
+                <div class="d-flex align-items-center mb-4">
+                    <a class="btn btn-primary btn-pill ms-auto me-2" href="{% url 'profile_edit' pk=user.pk %}">Edit Profile</a>
+                </div>
+                <table class="table table-borderless">
+                    <tbody>
+                    <tr>
+                        <th scope="row">Date of Birth:</th>
+                        <td>{{ profile.date_of_birth }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Weight:</th>
+                        <td>{{ profile.weight }} kg</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Height:</th>
+                        <td>{{ profile.height }} cm</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

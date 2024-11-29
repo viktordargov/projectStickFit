@@ -1,0 +1,37 @@
+{% extends 'common/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="d-flex align-items-center mb-4">
+            <h2 class="mb-0">Workout History List</h2>
+            <a class="btn btn-alert btn-pill ms-auto me-2" href="#">Reset History</a>
+        </div>
+        <!-- Table for displaying courses -->
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Course Name</th>
+                <th scope="col">Type</th>
+                <th scope="col">Comments</th>
+                <th scope="col">Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for workout in workout_history %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ workout.workout.workout_name }}</td>
+                    <td>{{ workout.workout.workout_type }}</td>
+                    <td>{{ workout.workout_comments }}</td>
+                    <td>{{ workout.workout_date }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No workout history </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

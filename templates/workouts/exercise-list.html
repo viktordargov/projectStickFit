@@ -1,0 +1,37 @@
+{% extends 'common/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="d-flex align-items-center mb-4">
+            <h2 class="mb-0">Exercise List</h2>
+            <a class="btn btn-primary btn-pill ms-auto me-2" href="{% url 'add_exercise' %}">Add Exercise</a>
+        </div>
+        <!-- Table for displaying courses -->
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Exercise Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for exercise in exercises %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ exercise.exercise_name }}</td>
+                    <td>{{ exercise.description }}</td>
+                    <td>
+                        <a class="btn btn-outline-alert" href="{% url 'exercise_delete' pk=exercise.pk %}">Delete</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No workouts available</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
