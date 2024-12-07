@@ -20,7 +20,6 @@ from decouple import config
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -40,7 +39,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://127.0.0.1",
 ]
 
-
 # Application definition
 
 PROJECT_MADE_APPS = [
@@ -52,15 +50,17 @@ PROJECT_MADE_APPS = [
 ]
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'crispy_forms',
-    'crispy_bootstrap5',
-] + PROJECT_MADE_APPS
+                     'django.contrib.admin',
+                     'django.contrib.auth',
+                     'django.contrib.contenttypes',
+                     'django.contrib.sessions',
+                     'django.contrib.messages',
+                     'django.contrib.staticfiles',
+                     'crispy_forms',
+                     'crispy_bootstrap5',
+                     'cloudinary',
+                     'cloudinary_storage',
+                 ] + PROJECT_MADE_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -93,7 +93,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'projectStickFit.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
@@ -107,7 +106,6 @@ DATABASES = {
         "PORT": "5432",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -127,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -142,12 +139,9 @@ USE_TZ = True
 # Cloudinary configuration
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = (
-    BASE_DIR / 'static',
-)
-CLOUDINARY_NAME = config('CLOUDINARY_NAME')
-CLOUDINARY_API_KEY = config('CLOUDINARY_API_KEY')
-CLOUDINARY_API_SECRET = config('CLOUDINARY_API_SECRET')
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Use django-cloudinary-storage for media storage
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -160,6 +154,14 @@ MEDIA_URL = "https://res.cloudinary.com/degikr9j/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+
+# Configuration
+cloudinary.config(
+    cloud_name=config('CLOUDINARY_NAME'),
+    api_key=config('CLOUDINARY_API_KEY'),
+    api_secret=config('CLOUDINARY_API_SECRET'),
+    secure=True
+)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 

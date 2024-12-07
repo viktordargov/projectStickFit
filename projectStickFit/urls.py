@@ -25,5 +25,6 @@ urlpatterns = [
     path('accounts/', include('projectStickFit.accounts.urls')),
     path('workouts/', include('projectStickFit.workouts.urls')),
     path('forum/', include('projectStickFit.forum.urls')),
+    path('posts/', include('projectStickFit.posts.urls'))
 
 ]

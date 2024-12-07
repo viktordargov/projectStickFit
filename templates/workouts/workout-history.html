@@ -4,7 +4,12 @@
     <div class="container mt-5">
         <div class="d-flex align-items-center mb-4">
             <h2 class="mb-0">Workout History List</h2>
-            <a class="btn btn-alert btn-pill ms-auto me-2" href="#">Reset History</a>
+            <form id="delete-history-form" class="ms-auto me-2" action="{% url 'delete_history' %}" method="post">
+                {% csrf_token %}
+                <button type="button" class="btn btn-danger btn-pill ms-auto me-2" onclick="confirmDeletion()">Delete
+                    All History
+                </button>
+            </form>
         </div>
         <!-- Table for displaying courses -->
         <table class="table table-bordered table-striped">
@@ -28,10 +33,19 @@
                 </tr>
             {% empty %}
                 <tr>
-                    <td colspan="5" class="text-center">No workout history </td>
+                    <td colspan="5" class="text-center">No workout history</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+
+
+    <script>
+        function confirmDeletion() {
+            if (confirm("Are you sure you want to delete all workout history? This action cannot be undone.")) {
+                document.getElementById('delete-history-form').submit();
+            }
+        }
+    </script>
 {% endblock %}

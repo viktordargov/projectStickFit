@@ -6,25 +6,25 @@
             <div class="col-md-8">
                 <!-- Post Details -->
                 <div class="card shadow-sm">
-                    {% if post.image %}
-                        <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+                    {% if thread.image %}
+                        <img src="{{ thread.image.url }}" class="card-img-top" alt="{{ thread.title }}">
                     {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title">{{ post.title }}</h5>
-                        <p class="card-text">{{ post.content }}</p>
+                        <h5 class="card-title">{{ thread.title }}</h5>
+                        <p class="card-text">{{ thread.content }}</p>
                         <p class="card-text"><small class="text-muted">Posted
-                            by {{ post.author.appprofile.get_display_name }}
-                            on {{ post.created_at|date:"F j, Y" }}</small></p>
+                            by {{ thread.author.appprofile.get_display_name }}
+                            on {{ thread.created_at|date:"F j, Y" }}</small></p>
 
                         <p class="card-text">
-                            <strong>Likes:</strong> {{ post.likes.count }}
+                            <strong>Likes:</strong> {{ thread.likes.count }}
                         </p>
 
                         <!-- Like/Unlike Button -->
                         <div class="d-flex justify-content-between">
-                            <form action="{% url 'like_post' pk=post.pk %}" method="POST" class="d-inline">
+                            <form action="{% url 'like_thread' pk=thread.pk %}" method="POST" class="d-inline">
                                 {% csrf_token %}
-                                <input type="hidden" name="source" value="post-detail">
+                                <input type="hidden" name="source" value="thread-detail">
                                 <button type="submit" class="btn btn-outline-primary btn-sm">
                                     {% if liked %}
                                         Unlike
@@ -40,10 +40,10 @@
                 <!-- Comments Section (if any) -->
                 <div class="mt-4">
                     <h3>Comments</h3>
-                    {% for comment in post.comments.all %}
+                    {% for comment in thread.comments.all %}
                         <div class="media mb-3">
                             <div class="media-body">
-                                <h5 class="mt-0">{{ comment.author.appprofile.get_display_name }}</h5>
+                                <h5 class="mt-0">{{ comment.author.profile.get_display_name }}</h5>
                                 <p>{{ comment.content }}</p>
                                 <p><small class="text-muted">Commented
                                     on {{ comment.created_at|date:"F j, Y" }}</small></p>

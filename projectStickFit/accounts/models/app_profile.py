@@ -4,7 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from datetime import date
 
-from projectStickFit.accounts.validators import validate_minimum_age
+from projectStickFit.accounts.validators import validate_minimum_age, validate_maximum_age
 
 UserModel = get_user_model()
 
@@ -13,6 +13,7 @@ class AppProfile(models.Model):
     user = models.OneToOneField(
         to=UserModel,
         on_delete=models.CASCADE,
+        related_name='profile',
     )
 
     display_name = models.CharField(
@@ -36,7 +37,10 @@ class AppProfile(models.Model):
         blank=True,
     )
     date_of_birth = models.DateField(
-        validators=[validate_minimum_age],
+        validators=[
+            validate_minimum_age,
+            validate_maximum_age,
+        ],
         null=True,
         blank=True,
     )
@@ -50,6 +54,7 @@ class AppProfile(models.Model):
     height = models.FloatField(
         null=True,
         blank=True,
+        validators=[MinValueValidator(110), MaxValueValidator(300)],
     )
 
     profile_picture = CloudinaryField(

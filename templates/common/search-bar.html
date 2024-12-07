@@ -1,0 +1,18 @@
+<div class="row height d-flex justify-content-center align-items-center">
+    <div class="col-md-8">
+        <div class="search">
+            <i class="fa fa-search"></i>
+
+            <form method="get" class="d-flex">
+                <input
+                    type="text"
+                    class="form-control"
+                    name="user_query"
+                    placeholder="Search workout..."
+                    value="{{ request.GET.user_query }}">
+                
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+    </div>
+</div>

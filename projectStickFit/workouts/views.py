@@ -2,11 +2,11 @@ import json
 from datetime import timedelta
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, TemplateView, DeleteView
-
-from projectStickFit import workouts
+from projectStickFit.common.mixins import IsStaffMixin
 from projectStickFit.workouts.forms import WorkoutAdd, AddExercise, WorkoutHistoryForm, WorkoutExerciseForm
 from projectStickFit.workouts.models import Workouts, Exercises, WorkoutHistory, WorkoutExercise
 
@@ -18,8 +18,20 @@ class WorkoutsListView(ListView):
     template_name = 'workouts/workouts-list.html'
     context_object_name = 'workouts'
 
+    def get_queryset(self):
+        queryset = Workouts.objects.all()
+        user_query = self.request.GET.get('user_query', '')
 
-class WorkoutsCreateView(CreateView):
+        if user_query:
+            # Filter by specific columns
+            return queryset.filter(
+                Q(workout_name__icontains=user_query) | Q(workout_description__icontains=user_query) | Q(
+                    workout_type__icontains=user_query),
+            )
+        return Workouts.objects.all()
+
+
+class WorkoutsCreateView(LoginRequiredMixin, IsStaffMixin, CreateView):
     model = Workouts
     form_class = WorkoutAdd
     template_name = 'workouts/workout-add.html'
@@ -134,6 +146,15 @@ class WorkoutHistoryListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return WorkoutHistory.objects.filter(user=self.request.user)
+
+
+class WorkoutHistoryDeleteView(LoginRequiredMixin, DeleteView):
+    model = WorkoutHistory
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        WorkoutHistory.objects.filter(user=user).delete()
+        return redirect('workout_history')
 
 
 class ExerciseListView(ListView):

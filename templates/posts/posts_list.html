@@ -1,0 +1,17 @@
+{% extends 'common/base.html' %}
+{% block content %}
+    <div class="container">
+        <h1 class="text-center my-4">Posts</h1>
+        <div class="row grid-wrapper">
+            {% for post in posts %}
+                <div class="col-md-2 col-4 mb-3 d-flex justify-content-center">
+                    <div class="image-container">
+                        <img src="{{ post.image.url }}" alt="Image {{ forloop.counter }}" class="img-thumbnail">
+                        <p>{{ post.caption }}</p>
+                        <small>Posted by {{ post.user.profile.get_display_name }} at {{ post.created_at }}</small>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

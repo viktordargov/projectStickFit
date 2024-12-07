@@ -2,47 +2,55 @@
 {% load crispy_forms_tags %}
 {% load custom_filters %}
 {% block content %}
+    
+    
 
     <div class="container mt-5">
+    
         <div class="row justify-content-center">
+             
             <div class="col-md-12">
-                <h1 class="text-center mb-4">Forum Posts</h1>
+                <h1 class="text-center mb-4">Forum Threads</h1>
+            </div>
+           <div class="search-bar">
+                {% include 'common/search-bar.html' %}
             </div>
             <div class="container d-flex justify-content-center">
-                <a class="btn btn-primary btn-pill ms-center m-3" href="{% url 'create_forum_post' %}">Create
-                    Post</a>
+                <a class="btn btn-primary btn-pill ms-center m-3" href="{% url 'create_forum_thread' %}">Create
+                    Thread</a>
             </div>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-12 d-flex flex-column align-items-center">
-                {% for post in posts %}
+                {% for thread in threads %}
                     <div class="card mb-4 w-100" style="max-width: 1200px;">
                         <div class="card shadow-sm">
-                            {% if post.image %}
-                                <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+                            {% if thread.image %}
+                                <img src="{{ thread.image.url }}" class="card-img-top" alt="{{ thread.title }}">
                             {% endif %}
 
                             <div class="card-body">
-                                <h5 class="card-title">{{ post.title }}</h5>
-                                <p class="card-text">{{ post.content|truncatewords:30 }}</p>
+                                <h5 class="card-title"><a href="{% url 'forum_thread_detail' thread.pk %}"
+                                                          class="text-decoration-none text-primary fw-bold">{{ thread.title }}</a>
+                                </h5>
+                                <p class="card-text">{{ thread.content|truncatewords:30 }}</p>
                                 <p class="card-text"><small class="text-muted">Posted
-                                    by {{ post.author.appprofile.get_display_name }}
-                                    on {{ post.created_at|date:"F j, Y" }}</small></p>
+                                    by {{ thread.author.profile.get_display_name }}
+                                    on {{ thread.created_at|date:"F j, Y" }}</small></p>
                                 <p class="card-text">
-                                    <strong>Likes:</strong> {{ post.likes.count }}
+                                    <strong>Likes:</strong> {{ thread.likes.count }}
                                 </p>
 
                                 <div class="d-flex justify-content-between">
-                                    <a href="{% url 'forum_post_detail' post.pk %}" class="btn btn-primary btn-sm">View
-                                        Post</a>
-                                    <form action="{% url 'like_post' pk=post.pk %}" method="POST" class="d-inline">
+
+                                    <form action="{% url 'like_thread' pk=thread.pk %}" method="POST" class="d-inline">
                                         {% csrf_token %}
 
-                                        {% if liked_posts|get_item:post.pk %}
-                                            <button type="submit" class="btn btn-outline-secondary btn-sm">Unlike
+                                        {% if liked_threads|get_item:thread.pk %}
+                                            <button type="submit" class="btn btn btn-light btn-sm">Unlike
                                             </button>
                                         {% else %}
-                                            <button type="submit" class="btn btn-outline-primary btn-sm">Like</button>
+                                            <button type="submit" class="btn btn-success btn-sm">Like</button>
                                         {% endif %}
 
                                     </form>

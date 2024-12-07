@@ -1,10 +1,10 @@
 from django import forms
-from .models import ForumPost, Comment
+from .models import ForumThreads, Comment
 
 
-class ForumPostForm(forms.ModelForm):
+class ForumThreadForm(forms.ModelForm):
     class Meta:
-        model = ForumPost
+        model = ForumThreads
         fields = ['title', 'content',]
 
 

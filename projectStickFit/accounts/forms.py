@@ -29,6 +29,8 @@ class ProfileEditForm(forms.ModelForm):
 
         labels = {
             'date_of_birth': 'Date of Birth',
+            'weight': 'Weight (kg)',
+            'height': 'Height (cm)',
         }
 
 

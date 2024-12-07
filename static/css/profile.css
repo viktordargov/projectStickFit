@@ -8,3 +8,13 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+/* Custom CSS for the profile picture */
+.profile-pic {
+    width: 150px;
+    height: 150px;
+    object-fit: cover; /* Ensure the image covers the container without distorting */
+    border-radius: 50%; /* Make the image round */
+    border: 2px solid #fff; /* Optional: Adds a white border around the image */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional: Adds a shadow effect */
+}

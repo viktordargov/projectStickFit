@@ -7,7 +7,10 @@ urlpatterns = [
     path('exercises/', views.ExerciseListView.as_view(), name='exercise_list'),
     path('add-workout/', views.WorkoutsCreateView.as_view(), name='add_workout'),
     path('add-exercise/', views.ExerciseCreateView.as_view(), name='add_exercise'),
-    path('history/', views.WorkoutHistoryListView.as_view(), name='workout_history'),
+    path('history/', include([
+        path('', views.WorkoutHistoryListView.as_view(), name='workout_history'),
+        path('delete-history/', views.WorkoutHistoryDeleteView.as_view(), name='delete_history'),
+    ])),
     path('workout/<int:pk>/', include([
         path('', views.WorkoutsDetailView.as_view(), name='workout_detail'),
         path('delete/', views.WorkoutDeleteView.as_view(), name='workout_delete'),

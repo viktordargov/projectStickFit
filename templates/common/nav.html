@@ -11,8 +11,8 @@
             <ul class="navbar-nav ms-auto w-100 justify-content-end">
                 <li class="nav-item"><a class="nav-link rounded-5" href="{% url 'home' %}">Home</a></li>
                 <li class="nav-item"><a class="nav-link rounded-5" href="{% url 'workouts_list' %}">Workouts</a></li>
-                <li class="nav-item"><a class="nav-link rounded-5" href="{% url 'workout_history' %}">History</a></li>
                 <li class="nav-item"><a class="nav-link rounded-5" href="{% url 'forum_list' %}">Forum</a></li>
+                <li class="nav-item"><a class="nav-link rounded-5" href="{% url 'posts_list' %}">Posts</a></li>
                 {% if not request.user.is_authenticated %}
                     
                     <li class="nav-item"><a class="nav-link rounded-5" href="{% url 'login' %}">Login</a></li>
