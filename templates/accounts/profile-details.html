@@ -5,22 +5,25 @@
 
     <div class="container profile-container">
         <div class="row align-items-center">
-            <!-- Left Section: Profile Picture and Names -->
             <div class="col-md-4 text-center">
-                <img src="{{ profile.profile_picture.url  }}"
-                     alt="Profile Picture" class="profile-pic">
+                {% if not profile.profile_picture.url %}
+                    <img src="https://w7.pngwing.com/pngs/903/869/png-transparent-person-lifting-barbell-exercise-fitness-centre-dumbbell-stick-figure-psd-gym-physical-fitness-sports-olympic-weightlifting.png"
+                         alt="Profile Picture" class="profile-pic">
+                {% else %}
+                    <img src="{{ profile.profile_picture.url }}"
+                         alt="Profile Picture" class="profile-pic">
+                {% endif %}
                 <h2>{{ profile.display_name }}</h2>
                 <p>{{ profile.first_name }} {{ profile.last_name }}</p>
             </div>
-
-            <!-- Right Section: Profile Details -->
             <div class="col-md-8 ">
                 <div class="d-flex align-items-center mb-4 justify-content-end">
                     <a class="btn btn-secondary btn-pill me-2" href="{% url 'workout_history' %}">Workout History</a>
-                    <a class="btn btn-primary btn-pill  me-2" href="{% url 'profile_edit' pk=user.pk %}">Edit Profile</a>
+                    <a class="btn btn-primary btn-pill  me-2" href="{% url 'profile_edit' pk=user.pk %}">Edit
+                        Profile</a>
                 </div>
                 <h3>Profile Details</h3>
-                
+
                 <table class="table table-borderless">
                     <tbody>
                     <tr>
@@ -39,5 +42,7 @@
                 </table>
             </div>
         </div>
+    <hr class="dotted-line">
+            {% include 'common/training-stats.html' %}
     </div>
 {% endblock %}

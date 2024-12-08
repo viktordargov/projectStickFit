@@ -1,5 +1,73 @@
 {% extends 'common/base.html' %}
 {% load static %}
-<img src="{% static '/images/404_stick.png' %}" alt="Page not found image">
 {% block content %}
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="container">
+                    <div class="jumbotron text-center py-1">
+                        <h1 class="display-4">Welcome to Your Fitness Journey!</h1>
+                        <p class="lead py-3">Track your workouts, connect with others, and achieve your fitness
+                            goals.</p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'random_workout' %}" class="btn btn-primary btn-lg m-5">Random Workout</a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-secondary btn-lg">Log In</a>
+                        {% endif %}
+                    </div>
+
+                    {% include 'common/training-stats.html' %}
+                </div>
+            </div>
+            <div class="col-md-4 pt-2">
+                <div class="quick-links sticky bg-light p-3 rounded shadow-sm">
+                    <h5 class="mb-4">Quick Links</h5>
+                    <div class="quick-link-item mb-3">
+                        <a href="{% url 'workouts_list' %}" class="d-flex align-items-center text-decoration-none">
+                            <div class="quick-link-icon me-3">
+                                <i class="fa fa-dumbbell"></i>
+                            </div>
+                            <div class="quick-link-text">
+                                <h6 class="mb-0">Workouts</h6>
+                                <small>Explore workout routines</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="quick-link-item mb-3">
+                        <a href="{% url 'workout_history' %}" class="d-flex align-items-center text-decoration-none">
+                            <div class="quick-link-icon me-3">
+                                <i class="fa fa-history"></i>
+                            </div>
+                            <div class="quick-link-text">
+                                <h6 class="mb-0">Workout History</h6>
+                                <small>Track your progress</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="quick-link-item mb-3">
+                        <a href="{% url 'forum_list' %}" class="d-flex align-items-center text-decoration-none">
+                            <div class="quick-link-icon me-3">
+                                <i class="fa fa-comments"></i>
+                            </div>
+                            <div class="quick-link-text">
+                                <h6 class="mb-0">Forum</h6>
+                                <small>Join discussions</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="quick-link-item mb-3">
+                        <a href="{% url 'posts_list' %}" class="d-flex align-items-center text-decoration-none">
+                            <div class="quick-link-icon me-3">
+                                <i class="fa fa-camera"></i>
+                            </div>
+                            <div class="quick-link-text">
+                                <h6 class="mb-0">Post a Photo</h6>
+                                <small>View workout pictures</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

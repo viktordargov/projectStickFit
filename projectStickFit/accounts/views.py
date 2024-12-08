@@ -6,11 +6,10 @@ from django.views.generic import CreateView, TemplateView, UpdateView, DetailVie
 
 from projectStickFit.accounts.forms import AppUserCreationForm, ProfileEditForm
 from projectStickFit.accounts.models import AppProfile
+from projectStickFit.workouts.models import WorkoutHistory
 
 UserModel = get_user_model()
 
-
-# Create your views here.
 
 class AppUserLogin(LoginView):
     template_name = 'accounts/login-page.html'
@@ -36,6 +35,13 @@ class AppUserProfileView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['profile'] = AppProfile.objects.get(user=self.request.user)
+        recent_workouts = WorkoutHistory.objects.filter(user=self.request.user).order_by('-workout_date')[:15]
+        workout_count = WorkoutHistory.objects.filter(user=self.request.user).count()
+        # total_hours = sum([workout.duration for workout in WorkoutHistory.objects.filter(user=self.request.user)])
+        context['recent_workouts'] = recent_workouts
+        context['workout_count'] = workout_count
+        context['total_hours'] = 0
+
         return context
 
 
