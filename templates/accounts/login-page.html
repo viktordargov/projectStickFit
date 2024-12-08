@@ -2,8 +2,8 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <!-- Start Login Section-->
-    <div class="login-register-div">
-        <div class="login-register-box">
+    <div class="form-class-div">
+        <div class="form-class">
             <h1>Stick Fit</h1>
 
             <!-- Start Login Form-->
@@ -11,12 +11,12 @@
                 {% csrf_token %}
                 {{ form|crispy }}
                 <!-- Login Button-->
-                <button type="submit"class="btn btn-primary">Log in</button>
+                <button type="submit" class="btn btn-primary">Log in</button>
             </form>
             <!-- End Login Form -->
 
         </div>
-        <div class="second-option">
+        <div class="form-class register-link">
 
             <!-- Link to Register Page-->
             <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>

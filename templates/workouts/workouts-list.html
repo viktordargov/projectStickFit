@@ -1,15 +1,19 @@
 {% extends 'common/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-
-    <div class="search-bar">
-        {% include 'common/search-bar.html' %}
+    <div class="container mt-5">
+        <div class="col-md-12">
+            <h1 class="text-center mb-4">Workouts List</h1>
+        </div>
+        <div class="search-bar">
+            {% include 'common/search-bar.html' %}
+        </div>
     </div>
 
 
     <div class="container mt-5">
         <div class="d-flex align-items-center mb-4">
-            <h2 class="mb-0">Workouts List</h2>
+            <h2 class="mb-0"></h2>
             {% if request.user.is_authenticated and request.user.is_staff %}
                 <a class="btn btn-primary btn-pill ms-auto me-2" href="{% url 'add_workout' %}">Add Course</a>
                 <a class="btn btn-primary btn-pill" href="{% url 'exercise_list' %}">Exercises</a>
