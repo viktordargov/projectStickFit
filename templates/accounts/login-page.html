@@ -1,26 +1,21 @@
 {% extends 'common/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <!-- Start Login Section-->
+
     <div class="form-class-div">
         <div class="form-class">
             <h1>Stick Fit</h1>
-
-            <!-- Start Login Form-->
             <form class="login" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <!-- Login Button-->
                 <button type="submit" class="btn btn-primary">Log in</button>
+                <a class="float-end" href="{% url 'password_reset_request' %}">Forgot Password?</a>
             </form>
-            <!-- End Login Form -->
-
         </div>
+        
         <div class="form-class register-link">
-
-            <!-- Link to Register Page-->
             <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
         </div>
+    
     </div>
-    <!-- End Login Section-->
 {% endblock %}

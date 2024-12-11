@@ -15,7 +15,7 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 from django.urls import reverse_lazy
-from decouple import config
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,17 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", cast=bool, default=False)
 
-ALLOWED_HOSTS = [
-    "dear-novel-bengal.ngrok-free.app",
-    "localhost",
-]
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://dear-novel-bengal.ngrok-free.app",
-    "https://127.0.0.1",
-]
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=lambda v: [s.strip() for s in v.split(',')])
+
 
 # Application definition
 
@@ -60,6 +55,7 @@ INSTALLED_APPS = [
                      'crispy_bootstrap5',
                      'cloudinary',
                      'cloudinary_storage',
+                     'celery',
                  ] + PROJECT_MADE_APPS
 
 MIDDLEWARE = [
@@ -98,12 +94,12 @@ WSGI_APPLICATION = 'projectStickFit.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "stick_fit_db",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "ENGINE": config("DB_ENGINE"),
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
 }
 
@@ -143,25 +139,34 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# Use django-cloudinary-storage for media storage
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = config("DEFAULT_FILE_STORAGE")
 
-# You can also configure custom URLs for Cloudinary resources:
-MEDIA_URL = "https://res.cloudinary.com/degikr9j/"
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
-# Configuration
 cloudinary.config(
     cloud_name=config('CLOUDINARY_NAME'),
     api_key=config('CLOUDINARY_API_KEY'),
     api_secret=config('CLOUDINARY_API_SECRET'),
     secure=True
 )
+
+MEDIA_URL = config("MEDIA_URL")
+
+EMAIL_BACKEND = config("EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = config("EMAIL_HOST", default="localhost")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool, default=True)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+
+
+CELERY_TASK_POOL = config("CELERY_TASK_POOL")
+CELERY_BROKER_URL = config("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND")
+CELERY_ACCEPT_CONTENT = config("CELERY_ACCEPT_CONTENT", cast=Csv())
+CELERY_RESULT_SERIALIZER = config("CELERY_RESULT_SERIALIZER")
+CELERY_TASK_SERIALIZER = config("CELERY_TASK_SERIALIZER")
+CELERY_TIMEZONE = config("CELERY_TIMEZONE")
+
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
