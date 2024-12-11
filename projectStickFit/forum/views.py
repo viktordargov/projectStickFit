@@ -1,22 +1,20 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import models
 from django.db.models import Q, Value
-from django.db.models.functions import Concat
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, View
+from django.views.generic import ListView, DetailView, CreateView, View, DeleteView
 
 from projectStickFit.forum.forms import CommentForm, ForumThreadForm
 from projectStickFit.forum.models import ForumThreads, Like
 
-
-# Create your views here.
 
 class ForumThreadListView(ListView):
     model = ForumThreads
     template_name = "forum/forum_list.html"
     context_object_name = "threads"
     ordering = ['-created_at']
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,11 +35,10 @@ class ForumThreadListView(ListView):
         user_query = self.request.GET.get('user_query', '')
 
         if user_query:
-            # Filter by specific columns
             return queryset.filter(
                 Q(title__icontains=user_query) | Q(content__icontains=user_query)
-            )
-        return ForumThreads.objects.all()
+            ).order_by('-created_at')
+        return ForumThreads.objects.all().order_by('-created_at')
 
 
 class ForumThreadDetailView(DetailView):
@@ -84,7 +81,19 @@ class ForumThreadCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-# Like a Post (Custom View)
+class ForumThreadDeleteView(LoginRequiredMixin, DeleteView):
+    model = ForumThreads
+    success_url = reverse_lazy('forum_list')
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+
+        if obj.author != self.request.user and not self.request.user.is_staff:
+            raise Http404("You are not authorized to delete this thread.")
+
+        return obj
+
+
 class LikeThreadView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):

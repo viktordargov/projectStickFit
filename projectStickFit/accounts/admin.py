@@ -3,8 +3,15 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
 
 from projectStickFit.accounts.forms import AppUserCreationForm, AppUserChangeForm
+from projectStickFit.accounts.models import AppProfile
 
 UserModel = get_user_model()
+
+
+class AppProfileInline(admin.StackedInline):
+    model = AppProfile
+    can_delete = False
+    verbose_name_plural = 'Profile'
 
 
 @admin.register(UserModel)
@@ -19,8 +26,7 @@ class AppUserAdmin(UserAdmin):
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ()}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'groups', 'user_permissions')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login',)}),
     )
 
@@ -33,3 +39,5 @@ class AppUserAdmin(UserAdmin):
             },
         ),
     )
+
+    inlines = [AppProfileInline]

@@ -1,25 +1,7 @@
 {% extends 'common/base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <script>
-        function toggleFields() {
-            const repetitionField = document.getElementById('repetition_id');
-            const durationField = document.getElementById('duration_id');
-            const option1Radio = document.getElementById('option1-radio');
-
-            if (option1Radio.checked) {
-                repetitionField.classList.remove('hidden');
-                durationField.classList.add('hidden');
-            } else {
-                durationField.classList.remove('hidden');
-                repetitionField.classList.add('hidden');
-            }
-        }
-
-        window.onload = function () {
-            toggleFields(); // Set initial state based on default selection
-        };
-    </script>
     <div class="form-class-div">
         <div class="form-class">
             <h2>Add exercise to {{ workout.workout_name }} </h2>
@@ -51,7 +33,7 @@
             </form>
         </div>
     </div>
-    
+
     <!-- Exercise List Table -->
     <div class="exercise-table-center">
         <div id="exercise-table">
@@ -68,7 +50,7 @@
                 <tbody>
                 {% for e in workout_exercises %}
                     <tr id="exercise-{{ forloop.counter }}">
-                    <td>{{ e.order }}</td>
+                        <td>{{ e.order }}</td>
                         <td>{{ e.exercise.exercise_name }}</td>
                         <td>
                             {% if e.duration %}
@@ -77,13 +59,16 @@
                                 {{ e.repetitions }} reps
                             {% endif %}
                         </td>
-                        <td><a class="btn btn-outline-alert" href="{% url 'workout_exercise_delete' pk=e.pk %}">Delete</a></td>
+                        <td><a class="btn btn-outline-alert"
+                               href="{% url 'workout_exercise_delete' pk=e.pk %}">Delete</a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
-    
-    
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/workout_edit.js' %}"></script>
 {% endblock %}

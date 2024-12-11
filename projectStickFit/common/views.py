@@ -1,4 +1,6 @@
 import random
+
+from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.shortcuts import render, redirect
 
@@ -26,6 +28,7 @@ class HomePage(TemplateView):
         return context
 
 
+@login_required
 def random_workout(request):
     workouts = Workouts.objects.all()
     random_wt = random.choice(workouts)

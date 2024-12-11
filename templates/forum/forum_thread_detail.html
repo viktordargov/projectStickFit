@@ -1,4 +1,5 @@
 {% extends 'common/base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="container mt-5">
@@ -10,11 +11,16 @@
                         <img src="{{ thread.image.url }}" class="card-img-top" alt="{{ thread.title }}">
                     {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title">{{ thread.title }}</h5>
+                        <h5 class="card-title">
+                            {{ thread.title }}
+
+                        </h5>
+
                         <p class="card-text">{{ thread.content }}</p>
                         <p class="card-text"><small class="text-muted">Posted
-                            by {{ thread.author.appprofile.get_display_name }}
+                            by {{ thread.author.profile.get_display_name }}
                             on {{ thread.created_at|date:"F j, Y" }}</small></p>
+
 
                         <p class="card-text">
                             <strong>Likes:</strong> {{ thread.likes.count }}
@@ -32,6 +38,11 @@
                                         Like
                                     {% endif %}
                                 </button>
+                            </form>
+                            <form id="delete-form" action="{% url 'delete_forum_thread' pk=thread.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="button" class="btn btn-danger"
+                                        onclick="confirmDeletion()"><i class="fa fa-trash"></i></button>
                             </form>
                         </div>
                     </div>
@@ -57,19 +68,26 @@
                             <strong>Add a Comment:</strong>
                         </div>
                         <div class="card-body">
-                            <form method="POST">
-                                {% csrf_token %}
-                                <div class="form-group">
+                            {% if request.user.is_authenticated %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group">
                                     <textarea name="content" class="form-control"
                                               placeholder="Write your comment here..."></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary mt-2">Submit</button>
-                            </form>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                                </form>
+                            {% else %}
+                                <p>Please <a href="{% url 'login' %}">login</a> to post comments!</p>
+                            {% endif %}
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/confirm_delete.js' %}"></script>
 {% endblock %}

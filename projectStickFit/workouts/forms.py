@@ -37,7 +37,6 @@ class WorkoutExerciseForm(forms.ModelForm):
         cleaned_data = super().clean()
         order = cleaned_data.get('order')
 
-        # If we have a workout associated with the instance, validate the order
         if self.workout:
             validate_unique_order(self.workout, order)
 

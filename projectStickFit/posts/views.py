@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from .models import Posts
 from .forms import PostForm
@@ -9,7 +11,12 @@ from cloudinary.uploader import destroy
 
 def post_list(request):
     posts = Posts.objects.all().order_by('-created_at')
-    return render(request, 'posts/posts_list.html', {'posts': posts})
+
+    paginator = Paginator(posts, 25)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'posts/posts_list.html', {'page_obj': page_obj})
 
 
 @login_required
@@ -26,13 +33,13 @@ def create_post(request):
     return render(request, 'posts/create_post.html', {'form': form})
 
 
-class DeleteImageView(View):
+class DeleteImageView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
-        # Extract image ID from the request body (JSON payload)
+
         try:
             import json
-            data = json.loads(request.body)  # Parse JSON payload
-            image_id = data.get("image_id")  # Get image ID from request body
+            data = json.loads(request.body)
+            image_id = data.get("image_id")
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON payload"}, status=400)
 
@@ -40,14 +47,17 @@ class DeleteImageView(View):
             return JsonResponse({"error": "No image ID provided"}, status=400)
 
         try:
-            # Find the image in the database
+
             image = Posts.objects.get(pk=image_id)
 
-            # Delete the image on Cloudinary
-            response = destroy(image.image.public_id)  # Delete using the correct public ID
+            if image.user != request.user and not request.user.is_staff:
+                return JsonResponse({"error": "You do not have permission to delete this image."}, status=403)
+
+
+            response = destroy(image.image.public_id)
 
             if response.get("result") == "ok":
-                # Remove the reference from the database
+
                 image.delete()
                 return JsonResponse({"message": "Image deleted successfully"})
             else:

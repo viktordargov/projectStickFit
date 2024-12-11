@@ -1,21 +1,14 @@
 {% extends 'common/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <!-- Start Login Section-->
     <div class="form-class-div">
         <div class="form-class">
             <h2>Stick Fit Registration</h2>
-
-            <!-- Start Login Form-->
             <form class="login" method="post">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <!-- Login Button-->
                 <button type="submit" class="btn btn-primary">Log in</button>
             </form>
-            <!-- End Login Form -->
-
         </div>
     </div>
-    <!-- End Login Section-->
 {% endblock %}
