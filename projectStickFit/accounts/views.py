@@ -64,6 +64,22 @@ class AppUserProfileUpdateView(LoginRequiredMixin, UpdateView):
     context_object_name = 'profile'
     template_name = 'accounts/profile-edit.html'
 
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+
+        if not self.request.user.is_staff and obj.user != self.request.user:
+            return None
+
+        return obj
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+
+        if obj is None:
+            return redirect('profile_edit', pk=request.user.profile.pk)
+
+        return super().dispatch(request, *args, **kwargs)
+
     def get_success_url(self):
         return reverse_lazy(
             'profile',

@@ -185,7 +185,6 @@ def populate():
          "description": "Sliding arms up and down a wall to improve shoulder mobility and strength."},
     ]
 
-    # Loop through the exercises and add them to the database
     for exercise in exercises:
         Exercises.objects.get_or_create(exercise_name=exercise["exercise_name"], description=exercise["description"])
 

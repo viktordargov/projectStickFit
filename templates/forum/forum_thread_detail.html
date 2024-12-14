@@ -39,11 +39,14 @@
                                     {% endif %}
                                 </button>
                             </form>
-                            <form id="delete-form" action="{% url 'delete_forum_thread' pk=thread.pk %}" method="post">
-                                {% csrf_token %}
-                                <button type="button" class="btn btn-danger"
-                                        onclick="confirmDeletion()"><i class="fa fa-trash"></i></button>
-                            </form>
+                            {% if thread.author == request.user or request.user.is_staff %}
+                                <form id="delete-form" action="{% url 'delete_forum_thread' pk=thread.pk %}"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="btn btn-danger"
+                                            onclick="confirmDeletion()"><i class="fa fa-trash"></i></button>
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
